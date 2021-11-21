@@ -48,7 +48,7 @@ class ResistivityMicrogrid:
         """
         Impedance phase in degrees.
         """
-        if self.impedance_phase is None:
+        if self._impedance_phase is None:
             raise AttributeError(
                 f"Impedance phase does not exist. Compute it first with the compute_direct_task method."
             )
@@ -59,7 +59,7 @@ class ResistivityMicrogrid:
         """
         Number of frequencies in impedance_phase and apparent_resistivity.
         """
-        if self.num_freq is None:
+        if self._num_freq is None:
             raise AttributeError(
                 f"Num freq does not exist. Set it first with the compute_direct_task method."
             )
