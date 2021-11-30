@@ -20,7 +20,7 @@ class ResistivityMicrogrid:
         self,
         resistivity: np.ndarray,
         pixel_size: float,
-        num_freq: tp.Optional[int] = None,
+        periods: tp.Optional[np.ndarray] = None,
         apparent_resistivity: tp.Optional[np.ndarray] = None,
         impedance_phase: tp.Optional[np.ndarray] = None,
     ):
@@ -28,7 +28,7 @@ class ResistivityMicrogrid:
         self.layer_power = np.full_like(resistivity, pixel_size)
         self.pixel_size = pixel_size
 
-        self._num_freq = num_freq
+        self._periods = periods
         self._apparent_resistivity = apparent_resistivity
         self._impedance_phase = impedance_phase
 
@@ -55,15 +55,15 @@ class ResistivityMicrogrid:
         return self._impedance_phase
 
     @property
-    def num_freq(self) -> int:
+    def periods(self) -> np.ndarray:
         """
-        Number of frequencies in impedance_phase and apparent_resistivity.
+        Periods (frequencies) in impedance_phase and apparent_resistivity.
         """
-        if self._num_freq is None:
+        if self._periods is None:
             raise AttributeError(
                 f"Num freq does not exist. Set it first with the compute_direct_task method."
             )
-        return self._num_freq
+        return self._periods
 
     @apparent_resistivity.setter
     def apparent_resistivity(self, value: np.ndarray):
@@ -73,21 +73,19 @@ class ResistivityMicrogrid:
     def impedance_phase(self, value: np.ndarray):
         self._impedance_phase = value
 
-    @num_freq.setter
-    def num_freq(self, value: int):
-        self._num_freq = value
+    @periods.setter
+    def periods(self, value: np.ndarray):
+        self._periods = value
 
     def compute_direct_task(
         self,
-        num_freq: int,
-        first_period: float = 0.01,
-        geometric_step: float = 2.0,
+        periods: np.ndarray,
     ):
         rho, phi = direct_task_1d(
-            num_freq, first_period, geometric_step, self.resistivity, self.layer_power
+            periods, self.resistivity, self.layer_power
         )
 
-        self.num_freq = num_freq
+        self.periods = periods
         self.apparent_resistivity = rho
         self.impedance_phase = phi
 
