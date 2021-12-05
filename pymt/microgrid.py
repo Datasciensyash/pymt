@@ -1,16 +1,22 @@
 import typing as tp
 import numpy as np
 
-from pymt.direct_task import direct_task_1d
+import pymt.direct_task as direct_tasks
 
 
 class ResistivityMicrogrid:
     """
-    1D Grid class for magnetotellurics data.
+    N-Dimensional Grid class for magnetotellurics data.
 
     Args:
         resistivity: Resistivity microgrid, in Ohm * m.
-        pixel_size: Pixel (one point in microgrid) size in m.
+            Last dimension is z (/depth), used for direct task computation.
+            Example for depth = 100 microgrid points:
+                1D - np.random.randint(1, 1000, (100))
+                2D - np.random.randint(1, 1000, (32, 100))
+                3D - np.random.randint(1, 1000, (32, 72, 100))
+
+        grid_pixel_size: Pixel (one point in microgrid) size in m.
         apparent_resistivity: Modulus of apparent resistivity, in Ohm * m.
         impedance_phase: Phase of impedance, in degrees.
 
@@ -19,14 +25,14 @@ class ResistivityMicrogrid:
     def __init__(
         self,
         resistivity: np.ndarray,
-        pixel_size: float,
+        grid_pixel_size: float,
         periods: tp.Optional[np.ndarray] = None,
         apparent_resistivity: tp.Optional[np.ndarray] = None,
         impedance_phase: tp.Optional[np.ndarray] = None,
     ):
         self.resistivity = resistivity
-        self.layer_power = np.full_like(resistivity, pixel_size)
-        self.pixel_size = pixel_size
+        self.layer_power = np.full_like(resistivity, grid_pixel_size)
+        self.grid_element_size = grid_pixel_size
 
         self._periods = periods
         self._apparent_resistivity = apparent_resistivity
@@ -81,7 +87,16 @@ class ResistivityMicrogrid:
         self,
         periods: np.ndarray,
     ):
-        rho, phi = direct_task_1d(
+        number_of_dims = len(self.resistivity.shape)
+        if number_of_dims > 3:
+            raise ValueError(
+                "compute_direct_task is implemented for only 1D, 2D and 3D resistivity microgrids.",
+                f"Got {number_of_dims}D array with shape {self.resistivity.shape}"
+            )
+
+        direct_task_fn = getattr(direct_tasks, f"direct_task_{number_of_dims}d")
+
+        rho, phi = direct_task_fn(
             periods, self.resistivity, self.layer_power
         )
 
