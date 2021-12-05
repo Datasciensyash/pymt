@@ -1,4 +1,5 @@
 import typing as tp
+
 import numpy as np
 
 import pymt.direct_task as direct_tasks
@@ -91,14 +92,12 @@ class ResistivityMicrogrid:
         if number_of_dims > 3:
             raise ValueError(
                 "compute_direct_task is implemented for only 1D, 2D and 3D resistivity microgrids.",
-                f"Got {number_of_dims}D array with shape {self.resistivity.shape}"
+                f"Got {number_of_dims}D array with shape {self.resistivity.shape}",
             )
 
         direct_task_fn = getattr(direct_tasks, f"direct_task_{number_of_dims}d")
 
-        rho, phi = direct_task_fn(
-            periods, self.resistivity, self.layer_power
-        )
+        rho, phi = direct_task_fn(periods, self.resistivity, self.layer_power)
 
         self.periods = periods
         self.apparent_resistivity = rho

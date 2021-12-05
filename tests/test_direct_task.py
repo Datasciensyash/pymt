@@ -1,6 +1,7 @@
-import pytest
-from pymt.direct_task import direct_task_1d
 import numpy as np
+import pytest
+
+from pymt.direct_task import direct_task_1d
 
 
 def test_direct_task():
