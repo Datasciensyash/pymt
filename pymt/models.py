@@ -64,4 +64,4 @@ class ResistivityLayerModel(ResistivityModel):
 if __name__ == "__main__":
     rmg = ResistivityMacroGrid([2, 4, 8, 16], [10, 300, 500, 2500])
     g = rmg.to_microgrid(pixel_size=2)
-    g.compute_direct_task(13)
+    g.compute_direct_task(np.array([0.01 * 2 ** i for i in range(13)]))
