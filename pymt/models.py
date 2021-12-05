@@ -4,7 +4,7 @@ import typing as tp
 import numpy as np
 
 from pymt.microgrid import ResistivityMicrogrid
-from pymt.models_functional import generate_random_layers_2d
+from pymt.models_functional import generate_random_layers_2d, generate_random_layers_3d
 
 
 class ResistivityModel(abc.ABC):
@@ -50,7 +50,7 @@ class RandomLayerModel(ResistivityModel):
                 np.array(self.layer_resistivity),
             )
         elif isinstance(size, tuple):
-            resistivity = generate_random_layers_2d(
+            resistivity = generate_random_layers_3d(
                 size[0],
                 size[1],
                 grid_pixel_size,
