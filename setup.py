@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 from setuptools import find_packages, setup
@@ -7,15 +6,16 @@ THIS_DIR = Path(__file__).parent
 
 
 def _load_requirements(path_dir: Path, comment_char: str = "#"):
-    with open(os.path.join(path_dir, "requirements.txt"), "r") as file:
-        lines = [ln.strip() for ln in file.readlines()]
+    requirements_directory = path_dir / "requirements.txt"
     requirements = []
-    for ln in lines:
-        # filer all comments
-        if comment_char in ln:
-            ln = ln[: ln.index(comment_char)]
-        if ln:  # if requirement is not empty
-            requirements.append(ln)
+    with requirements_directory.open("r") as file:
+        for line in file.readlines():
+            line = line.lstrip()
+            # Filter all comments
+            if comment_char in line:
+                line = line[: line.index(comment_char)]
+            if line:  # If requirement is not empty
+                requirements.append(line)
     return requirements
 
 
