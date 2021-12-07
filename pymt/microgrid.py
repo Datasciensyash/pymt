@@ -7,7 +7,7 @@ import pymt.direct_task as direct_tasks
 
 class ResistivityMicrogrid:
     """
-    N-Dimensional Grid class for magnetotellurics data.
+    N-Dimensional Grid class for MT data.
 
     Args:
         resistivity: Resistivity microgrid, in Ohm * m.
@@ -22,6 +22,15 @@ class ResistivityMicrogrid:
         impedance_phase: Phase of impedance, in degrees.
 
     """
+
+    __slots__ = (
+        "resistivity",
+        "layer_power",
+        "grid_element_size",
+        "_periods",
+        "_apparent_resistivity",
+        "_impedance_phase",
+    )
 
     def __init__(
         self,
@@ -64,11 +73,11 @@ class ResistivityMicrogrid:
     @property
     def periods(self) -> np.ndarray:
         """
-        Periods (frequencies) in impedance_phase and apparent_resistivity.
+        Periods (frequencies), used to compute impedance_phase and apparent_resistivity.
         """
         if self._periods is None:
             raise AttributeError(
-                f"Num freq does not exist. Set it first with the compute_direct_task method."
+                f"Periods does not exist. Set it first with the compute_direct_task method."
             )
         return self._periods
 
@@ -84,10 +93,7 @@ class ResistivityMicrogrid:
     def periods(self, value: np.ndarray):
         self._periods = value
 
-    def compute_direct_task(
-        self,
-        periods: np.ndarray,
-    ):
+    def compute_direct_task(self, periods: np.ndarray):
         number_of_dims = len(self.resistivity.shape)
         if number_of_dims > 3:
             raise ValueError(
