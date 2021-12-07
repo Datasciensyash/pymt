@@ -9,7 +9,7 @@ def test_direct_task():
         num_freq=27,
         first_period=0.01,
         geometric_step=2,
-        layer_resistance=np.array([1000, 1]),
+        layer_resistivity=np.array([1000, 1]),
         layer_power=np.array([5000]),
     )
 

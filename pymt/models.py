@@ -22,11 +22,18 @@ class RandomLayerModel(ResistivityModel):
         layer_resistivity: tp.List[float],
     ):
         """
-        Arbitrary MacroGrid class for magnetotellurics data.
+        Random "Layered" model generator class.
 
         Args:
-            layer_power: Power of each layer in m.
-            resistivity: Resistivity microgrid, in Ohm * m.
+            layer_power_max:
+                List of max power for each layer in meters, e.g [100, 2000, 100, ...]
+            layer_power_min:
+                List of min power for each layer in meters, e.g [50, 1000, 50, ...]
+            layer_exist_probability:
+                List of layer existence probability in each point, e.g. [1.0, 1.0, 0.9, ...]
+            layer_resistivity:
+                List of layer resistivity in Ohm * m, e.g. [2000, 1500, 8000, ...]
+
         """
         self.layer_power_max = layer_power_max
         self.layer_power_min = layer_power_min

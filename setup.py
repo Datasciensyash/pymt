@@ -21,7 +21,7 @@ def _load_requirements(path_dir: Path, comment_char: str = "#"):
 
 setup(
     name="pymt",
-    version="0.0.4",
+    version="0.0.5",
     packages=find_packages(exclude=["tests", "tests.*"]),
     install_requires=_load_requirements(THIS_DIR),
 )
