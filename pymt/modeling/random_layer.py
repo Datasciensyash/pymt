@@ -1,16 +1,13 @@
-import abc
 import typing as tp
 
 import numpy as np
 
 from pymt.microgrid import ResistivityMicrogrid
-from pymt.models_functional import generate_random_layers_2d, generate_random_layers_3d
+from pymt.modeling.abstract import ResistivityModel
+from pymt.modeling.functional import (generate_random_layers_2d,
+                                      generate_random_layers_3d)
 
-
-class ResistivityModel(abc.ABC):
-    @abc.abstractmethod
-    def to_microgrid(self, *args, **kwargs) -> ResistivityMicrogrid:
-        pass
+__all__ = ["RandomLayerModel"]
 
 
 class RandomLayerModel(ResistivityModel):

@@ -1,6 +1,8 @@
 import numpy as np
 from numba import jit, prange
 
+__all__ = ["generate_random_layers_2d", "generate_random_layers_3d"]
+
 
 @jit(nopython=True)
 def generate_random_layers_2d(
