@@ -15,9 +15,7 @@ def generate_random_layers_2d(
     layer_resistivity: np.ndarray,
 ) -> np.ndarray:
     num_layers = len(layer_resistivity)
-    resistivity_grid = np.full(
-        (size, np.sum(layer_power_max) // step_z), default_resistivity
-    )
+    resistivity_grid = np.full((size, np.sum(layer_power_max) // step_z), default_resistivity)
     for x in prange(size):
         offset = 0
         for i in range(num_layers):
@@ -57,8 +55,6 @@ def generate_random_layers_3d(
                         np.random.random() * (layer_power_max[i] - layer_power_min[i])
                     )
                 num_blocks = int(power // step_z)
-                resistivity_grid[
-                    x, y, offset : offset + num_blocks
-                ] = layer_resistivity[i]
+                resistivity_grid[x, y, offset : offset + num_blocks] = layer_resistivity[i]
                 offset += num_blocks
     return resistivity_grid
