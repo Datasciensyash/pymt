@@ -73,6 +73,7 @@ class RandomLayerModel(ResistivityModel):
         size: tp.Union[int, tp.Tuple[int, int]],
         grid_pixel_size: float,
         default_resistivity: tp.Optional[float] = None,
+        random_layer_powers: tp.Optional[tp.Tuple[int, int]] = None,
     ) -> ResistivityMicrogrid:
 
         layer_resistivity = np.clip(
@@ -108,4 +109,12 @@ class RandomLayerModel(ResistivityModel):
         else:
             raise ValueError(f"size must be tuple or int, got {type(size)}.")
 
-        return ResistivityMicrogrid(resistivity, grid_pixel_size=grid_pixel_size)
+        layer_powers = None
+        if random_layer_powers is not None:
+            layer_powers = np.random.randint(
+                *random_layer_powers, size=resistivity.shape
+            )
+
+        return ResistivityMicrogrid(
+            resistivity, grid_pixel_size=grid_pixel_size, layer_power=layer_powers
+        )

@@ -35,13 +35,18 @@ class ResistivityMicrogrid:
     def __init__(
         self,
         resistivity: np.ndarray,
-        grid_pixel_size: float,
+        grid_pixel_size: tp.Optional[float],
         periods: tp.Optional[np.ndarray] = None,
         apparent_resistivity: tp.Optional[np.ndarray] = None,
         impedance_phase: tp.Optional[np.ndarray] = None,
+        layer_power: tp.Optional[np.ndarray] = None
     ):
         self.resistivity = resistivity
-        self.layer_power = np.full_like(resistivity, grid_pixel_size)
+
+        self.layer_power = layer_power
+        if self.layer_power is None:
+            self.layer_power = np.full_like(resistivity, grid_pixel_size)
+
         self.grid_element_size = grid_pixel_size
 
         self._periods = periods
