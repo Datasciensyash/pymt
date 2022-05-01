@@ -56,12 +56,10 @@ class RandomLayerModel(ResistivityModel):
             alpha=np.random.uniform(*self._alpha_range),
         )
 
-        layer_powers = None
-        if random_layer_powers is not None:
-            layer_powers = np.random.randint(
-                *random_layer_powers, size=resistivity.shape
-            )
+        layer_powers = np.random.randint(
+            *self._powers_range, size=resistivity.shape
+        )
 
         return ResistivityMicrogrid(
-            resistivity, grid_pixel_size=grid_pixel_size, layer_power=layer_powers
+            resistivity, layer_power=layer_powers
         )
