@@ -50,7 +50,7 @@ class RandomLayerModel(ResistivityModel):
     ) -> ResistivityMicrogrid:
 
         resistivity = generate_random_layers_2d(
-            **size,
+            *size,
             num_layers=np.random.randint(*self._num_layers_range),
             resistivity_range=self._resistivity_range,
             alpha=np.random.uniform(*self._alpha_range),
