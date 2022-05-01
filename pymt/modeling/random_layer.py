@@ -34,7 +34,7 @@ class RandomLayerModel(ResistivityModel):
         self._powers_range = powers_range
         self._num_layers_range = num_layers_range
 
-        if any([i < 1 for i in self._resistivity_range]):
+        if any([i < 0 for i in self._resistivity_range]):
             raise ValueError(
                 f"Resistivity must be in range [0, +inf), got: {self._resistivity_range}"
             )
