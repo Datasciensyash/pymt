@@ -1,5 +1,5 @@
 # PyMT
-Magnetotellurics processing python toolkit
+Fast computation of 1D magnetotellurics direct task.
 
 ---
 
